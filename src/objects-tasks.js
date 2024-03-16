@@ -17,8 +17,10 @@
  *    shallowCopy({a: 2, b: { a: [1, 2, 3]}}) => {a: 2, b: { a: [1, 2, 3]}}
  *    shallowCopy({}) => {}
  */
-function shallowCopy(/* obj */) {
-  throw new Error('Not implemented');
+function shallowCopy(obj) {
+  const a = {};
+  Object.assign(a, obj);
+  return a;
 }
 
 /**
@@ -32,8 +34,20 @@ function shallowCopy(/* obj */) {
  *    mergeObjects([{a: 1, b: 2}, {b: 3, c: 5}]) => {a: 1, b: 5, c: 5}
  *    mergeObjects([]) => {}
  */
-function mergeObjects(/* objects */) {
-  throw new Error('Not implemented');
+function mergeObjects(objects) {
+  const res = {};
+  for (let i = 0; i < objects.length; i += 1) {
+    const entries = Object.entries(objects[i]);
+    for (let j = 0; j < entries.length; j += 1) {
+      const [key, value] = entries[j];
+      if (res[key] === undefined) {
+        res[key] = value;
+      } else {
+        res[key] += value;
+      }
+    }
+  }
+  return res;
 }
 
 /**
@@ -49,8 +63,12 @@ function mergeObjects(/* objects */) {
  *    removeProperties({name: 'John', age: 30, city: 'New York'}, 'age') => {name: 'John', city: 'New York'}
  *
  */
-function removeProperties(/* obj, keys */) {
-  throw new Error('Not implemented');
+function removeProperties(obj, keys) {
+  const res = obj;
+  for (let i = 0; i < keys.length; i += 1) {
+    delete res[keys[i]];
+  }
+  return res;
 }
 
 /**
@@ -65,8 +83,14 @@ function removeProperties(/* obj, keys */) {
  *    compareObjects({a: 1, b: 2}, {a: 1, b: 2}) => true
  *    compareObjects({a: 1, b: 2}, {a: 1, b: 3}) => false
  */
-function compareObjects(/* obj1, obj2 */) {
-  throw new Error('Not implemented');
+function compareObjects(obj1, obj2) {
+  const obj1Keys = Object.keys(obj1);
+  for (let i = 0; i < obj1Keys.length; i += 1) {
+    if (obj1[obj1Keys[i]] !== obj2[obj1Keys[i]]) {
+      return false;
+    }
+  }
+  return true;
 }
 
 /**
@@ -80,8 +104,8 @@ function compareObjects(/* obj1, obj2 */) {
  *    isEmptyObject({}) => true
  *    isEmptyObject({a: 1}) => false
  */
-function isEmptyObject(/* obj */) {
-  throw new Error('Not implemented');
+function isEmptyObject(obj) {
+  return Object.keys(obj).length === 0;
 }
 
 /**
@@ -100,8 +124,9 @@ function isEmptyObject(/* obj */) {
  *    immutableObj.newProp = 'new';
  *    console.log(immutableObj) => {a: 1, b: 2}
  */
-function makeImmutable(/* obj */) {
-  throw new Error('Not implemented');
+function makeImmutable(obj) {
+  Object.freeze(obj);
+  return obj;
 }
 
 /**
